@@ -1,0 +1,73 @@
+﻿@page "/"
+@inject UserService US
+
+<PageTitle>Title</PageTitle>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>
+                    @user.Id
+                </td>
+                <TableField user=@user property="Name"/>
+                <TableField user=@user property="Age"/>
+                <td>
+                    <button @onclick="() => UpdateUser(user)">Обновить</button>
+                    <button @onclick="() => DeleteUser(user)">Удалить</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<UserForm OnValidSubmit="AddUser"/>
+
+@code {
+    List<User> users = new List<User>();
+
+    private void AddUser(User user)
+    {
+        US.AddUserAsync(user).GetAwaiter().OnCompleted(() =>
+        {
+            Fetch();
+        });
+    }
+
+    private void UpdateUser(User user)
+    {
+        US.UpdateUserAsync(user).GetAwaiter().OnCompleted(() =>
+        {
+            Fetch();
+        });
+    }
+
+    private void DeleteUser(User user)
+    {
+        users.Remove(user);
+        US.DeleteUserAsync(user).GetAwaiter().OnCompleted(() =>
+        {
+            Fetch();
+        });
+    }
+
+    private void Fetch()
+    {
+        users = US.GetUsers();
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        Fetch();
+    }
+}

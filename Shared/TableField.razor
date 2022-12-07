@@ -1,0 +1,45 @@
+﻿<td @onfocusin="() => oldValue = data" @onfocusout=UpdateUser>
+    <input class="form-control" @bind-value="@data" />
+</td>
+
+@code {
+    bool isInput = false;
+    string data = string.Empty;
+    string oldValue = string.Empty;
+
+    [Parameter, EditorRequired]
+    public User user { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public string property { get; set; } = null!;
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        data = user.GetType().GetProperty(property)?.GetValue(user)?.ToString();
+        base.OnAfterRender(firstRender);
+    }
+
+    private void UpdateUser()
+    {
+        if (data != oldValue)
+        {
+            System.Reflection.PropertyInfo propertyInfo = user.GetType().GetProperty(property);
+
+            if (propertyInfo.PropertyType == typeof(int))
+            {
+                int.TryParse(data, out int result);
+                propertyInfo.SetValue(user, result);
+            }
+            else
+            {
+                propertyInfo.SetValue(user, data);
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        data = user.GetType().GetProperty(property)?.GetValue(user)?.ToString();
+    }
+}

@@ -1,0 +1,32 @@
+﻿<h4>Создать пользователя:</h4>
+<EditForm class="user_form" Model="@user" OnValidSubmit="() => HandleSubmit()" >
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <div>
+        <label class="form-label">
+            Имя:
+            <InputText class="form-control" id="name" @bind-Value="user.Name" />
+        </label>
+        <label class="form-label">
+            Возраст:
+            <InputNumber class="form-control" id="age" @bind-Value="user.Age" />
+        </label>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </div>
+</EditForm>
+
+@code {
+    private User user = new();
+
+    private void HandleSubmit()
+    {
+        OnValidSubmit.InvokeAsync(user).GetAwaiter().OnCompleted(() =>
+        {
+            user = new();
+        });
+    }
+
+    [Parameter]
+    public EventCallback<User> OnValidSubmit { get; set; }
+}
