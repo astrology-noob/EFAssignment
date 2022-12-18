@@ -3,12 +3,15 @@
 
 <PageTitle>Title</PageTitle>
 
+<h2>Таблица пользователей</h2>
+
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Age</th>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Возраст</th>
+            <th>Действия</th>
         </tr>
     </thead>
 
@@ -22,8 +25,8 @@
                 <TableField user=@user property="Name"/>
                 <TableField user=@user property="Age"/>
                 <td>
-                    <button @onclick="() => UpdateUser(user)">Обновить</button>
-                    <button @onclick="() => DeleteUser(user)">Удалить</button>
+                    <button class="btn btn-warning" @onclick="() => UpdateUser(user)">Обновить</button>
+                    <button class="btn btn-danger" @onclick="() => DeleteUser(user)">Удалить</button>
                 </td>
             </tr>
         }

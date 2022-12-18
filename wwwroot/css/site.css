@@ -108,3 +108,15 @@ table .form-control:focus {
     gap: 10px;
     flex-direction: column;
 }
+
+.btn {
+    margin: 5px 0;
+    height: 80%;
+    line-height: normal;
+    font-size: small;
+    padding: 5px 10px;
+}
+
+h2 {
+    margin-top: 30px;
+}
